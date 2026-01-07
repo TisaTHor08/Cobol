@@ -33,3 +33,28 @@ COMPUTE WS-RES = (WS-A + WS-B) / 2.
 Attention a l'overflow (si 9(2) alors on ne peut pas depasser 99)
 
 N'utiliser les verbes que si opération simple et nécéssaire a pointer du doigt, pour dire "LA on ajoute X"
+
+##COMPARATEUR
+
+=
+NOT =
+>
+<
+>=
+<=
+
+on peut ajouter un AND, OR, NOT pour avoir plusieur condition inline
+On doit ajouter un IF et un END-IF, de plus seul de END-IF a un "." a la fin, et non les fonctions a l'interieur
+
+##BOUCLE
+
+for -> PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 5  
+
+VARYING FROM BY permet d'incrementer
+
+PERFORM permet aussi d'appeler une fonction:
+
+PERFORM TRAITEMENT
+
+TRAITEMENT.
+    ....
