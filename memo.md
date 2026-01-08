@@ -1,4 +1,4 @@
-##VARIABLES
+## VARIABLES
 
 le chiffre XX avant la variable definit sa hierarchie, on peut donc faire des sous variable, sachant qu'on increment de 05 a chaque fois.
 
@@ -18,7 +18,7 @@ S9(y) -> int positif ou negatif (avec un signe definit)
 A(y) -> seulement alphabétique
 Z(y) -> equivalent au 9 mais sans les 0 précédents
 
-##OPERATEUR
+## OPERATEUR
 
 ADD [] TO 
 SUBTRACT [] FROM
@@ -34,7 +34,7 @@ Attention a l'overflow (si 9(2) alors on ne peut pas depasser 99)
 
 N'utiliser les verbes que si opération simple et nécéssaire a pointer du doigt, pour dire "LA on ajoute X"
 
-##COMPARATEUR
+## COMPARATEUR
 
 =
 NOT =
@@ -46,7 +46,7 @@ NOT =
 on peut ajouter un AND, OR, NOT pour avoir plusieur condition inline
 On doit ajouter un IF et un END-IF, de plus seul de END-IF a un "." a la fin, et non les fonctions a l'interieur
 
-##BOUCLE
+## BOUCLE
 
 for -> PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 5  
 
@@ -58,3 +58,15 @@ PERFORM TRAITEMENT
 
 TRAITEMENT.
     ....
+
+## TABLEAUX
+
+au lieu de faire :
+WS-OP-1, puis 2, 3, 4 etc... on peut faire
+
+01 WS-OPERATIONS.
+    05 WS-OP-AMOUNT PIC S9(4)V9(2) OCCURS 10 TIMES.
+
+se qui cree 10 zones de mémoire identique
+
+et pour obtenir la valeur de l'une des variables, on fait WS_OP_AMOUNT(y) ou y correspond a l'id de se qu'on cherche

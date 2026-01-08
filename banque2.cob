@@ -1,0 +1,70 @@
+>>SOURCE FORMAT FREE
+
+IDENTIFICATION DIVISION.
+PROGRAM-ID. BANQUES.
+
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 WS-SOLDE-O PIC S9(4)V9(2).
+01 WS-SOLDE-C PIC S9(4)V9(2).
+01 WS-SOLDE-TMP PIC S9(4)V9(2).
+
+01 WS-OPERATIONS.
+    05 WS-OP PIC S9(4)V9(2) OCCURS 10 TIMES.
+
+01 WS-OP-NB PIC 9(3).
+
+
+01 WS-OP-C PIC S9(4)V9(2).
+
+01 WS-I PIC 9(3).
+
+PROCEDURE DIVISION.
+    MOVE 1000.00 TO WS-SOLDE-O.
+    MOVE WS-SOLDE-O TO WS-SOLDE-C.
+
+    MOVE 200.00 TO WS-OP(1).
+    MOVE -150.00 TO WS-OP(2).
+    MOVE -1200.00 TO WS-OP(3).
+    MOVE 50.00 TO WS-OP(4).
+
+    MOVE 0 TO WS-OP-NB.
+
+    PERFORM COUNTOP
+
+    DISPLAY "Solde initial : " WS-SOLDE-O.
+
+    PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > WS-OP-NB
+        IF WS-OP(WS-I) NOT = 0
+            MOVE WS-OP(WS-I) TO WS-OP-C
+            PERFORM CALCUL
+        END-IF
+    END-PERFORM.
+
+    DISPLAY "Solde final : " WS-SOLDE-C.
+
+    STOP RUN.
+
+CALCUL.
+    
+    COMPUTE WS-SOLDE-TMP = WS-SOLDE-C + WS-OP-C.
+    IF WS-SOLDE-TMP >= 0
+        ADD WS-OP-C TO WS-SOLDE-C
+        IF WS-OP-C >= 0
+            DISPLAY "Operation : CREDIT Montant : " WS-OP-C
+        ELSE
+            DISPLAY "Operation : DEBIT Montant : " WS-OP-C
+        END-IF
+    ELSE
+        DISPLAY "ERREUR : solde insuffisant"
+    END-IF.
+    DISPLAY "Solde apres operation : " WS-SOLDE-C.
+
+
+
+COUNTOP.
+    PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10
+        IF WS-OP(WS-I) NOT = 0
+            ADD 1 TO WS-OP-NB
+        END-IF
+    END-PERFORM.
