@@ -70,3 +70,29 @@ WS-OP-1, puis 2, 3, 4 etc... on peut faire
 se qui cree 10 zones de mémoire identique
 
 et pour obtenir la valeur de l'une des variables, on fait WS_OP_AMOUNT(y) ou y correspond a l'id de se qu'on cherche
+
+## FICHIERS
+
+on ajoute une nouvelle division:
+ENIVRONNEMENT DIVISION.
+elle sert a dire "communique avec l'OS hote
+
+avec la section:
+INPUT-OUTPUT SECTION.
+sert a dire "tu vas prendre et/ou renvoyer des données"
+
+Et ensuite se qui est lié au fichier:
+FILE-CONTROL.
+    SELECT F-OPERATIONS ASSIGN TO "operations.txt"
+        ORGANIZATION IS LINE SEQUENTIAL. (txt en ligne par ligne)
+
+FILE-CONTROL fait le lien entre un alias et un fichier reel
+
+F-OPERATIONS est un nom qu'on donne a un fichier, c'est un alias
+ASSIGN TO dit que cet alias correspond a se fichier reel
+ORGANIZATION décrit le fichier pour que le compilateur soit capable de savoir se qu'il attend
+
+SEQUENTIAL	fichier binaire structuré
+LINE SEQUENTIAL	fichier texte lisible
+RELATIVE	accès par numéro
+INDEXED	accès par clé
