@@ -62,7 +62,7 @@ PROCEDURE DIVISION.
 
             EVALUATE WS-TYP(WS-I)
                 WHEN "E"
-                    COMPUTE WS-PRI(WS-I) = WS-PRI(WS-I) - (WS-PRI(WS-I) / 10)
+                    COMPUTE WS-PRI(WS-I) = WS-PRI(WS-I) * 0.9
                 WHEN "P"
                     CONTINUE
                 WHEN OTHER
@@ -74,9 +74,11 @@ PROCEDURE DIVISION.
             DISPLAY WS-CDP(WS-I)
             DISPLAY WS-QTE(WS-I)
             DISPLAY WS-PRI(WS-I)
+            DISPLAY "------------------------------------"
         ELSE
             ADD 1 TO WS-FAC-REJ
         END-IF
+        
     END-PERFORM.
     DISPLAY WS-FAC-NB.
     DISPLAY WS-FAC-OK.
