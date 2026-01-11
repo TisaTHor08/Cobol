@@ -36,6 +36,7 @@ WORKING-STORAGE SECTION.
 01 WS-FAC-REJ PIC 9(3).
 
 01 WS-I PIC 9(3).
+01 WS-QTE-TMP PIC 9(3).
 
 PROCEDURE DIVISION.
 
@@ -48,21 +49,38 @@ PROCEDURE DIVISION.
                 ADD 1 TO WS-FAC-NB
                 MOVE F-FAC-REC TO WS-FAC-C
         END-READ
-        MOVE WS-FAC-C(1:8) TO WS-NUM(WS-I)
-        MOVE WS-FAC-C(9:5) TO WS-CDC(WS-I)
-        MOVE WS-FAC-C(15:1) TO WS-TYP(WS-I)
-        MOVE WS-FAC-C(16:5) TO WS-CDP(WS-I)
-        MOVE WS-FAC-C(21:3) TO WS-QTE(WS-I)
-        MOVE WS-FAC-C(24:7) TO WS-PRI(WS-I)
-        DIVIDE WS-PRI(WS-I) BY 100 GIVING WS-PRI(WS-I)
- 
-        DISPLAY WS-NUM(WS-I)
-        DISPLAY WS-CDC(WS-I)
-        DISPLAY WS-TYP(WS-I)
-        DISPLAY WS-CDP(WS-I)
-        DISPLAY WS-QTE(WS-I)
-        DISPLAY WS-PRI(WS-I)
+        MOVE WS-FAC-C(21:3) TO WS-QTE-TMP
+        IF WS-QTE-TMP NOT = 0
+            ADD 1 TO WS-FAC-OK
+            MOVE WS-FAC-C(1:8) TO WS-NUM(WS-I)
+            MOVE WS-FAC-C(9:5) TO WS-CDC(WS-I)
+            MOVE WS-FAC-C(15:1) TO WS-TYP(WS-I)
+            MOVE WS-FAC-C(16:5) TO WS-CDP(WS-I)
+            MOVE WS-FAC-C(21:3) TO WS-QTE(WS-I)
+            MOVE WS-FAC-C(24:7) TO WS-PRI(WS-I)
+            DIVIDE WS-PRI(WS-I) BY 100 GIVING WS-PRI(WS-I)
+
+            EVALUATE WS-TYP(WS-I)
+                WHEN "E"
+                    COMPUTE WS-PRI(WS-I) = WS-PRI(WS-I) - (WS-PRI(WS-I) / 10)
+                WHEN "P"
+                    CONTINUE
+                WHEN OTHER
+                    DISPLAY "error with number " WS-NUM(WS-I) " not valid client type"
+            END-EVALUATE
+            DISPLAY WS-NUM(WS-I)
+            DISPLAY WS-CDC(WS-I)
+            DISPLAY WS-TYP(WS-I)
+            DISPLAY WS-CDP(WS-I)
+            DISPLAY WS-QTE(WS-I)
+            DISPLAY WS-PRI(WS-I)
+        ELSE
+            ADD 1 TO WS-FAC-REJ
+        END-IF
     END-PERFORM.
+    DISPLAY WS-FAC-NB.
+    DISPLAY WS-FAC-OK.
+    DISPLAY WS-FAC-REJ.
     CLOSE F-FACTURE.
 
     STOP RUN.
