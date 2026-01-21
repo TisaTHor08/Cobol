@@ -6,7 +6,7 @@ INPUT-OUTPUT SECTION.
 FILE-CONTROL.
     SELECT F-FACTURE ASSIGN TO "commandes.txt"
         ORGANIZATION IS LINE SEQUENTIAL.
-    SELECT F-REJETS ASSIGN TO "rejets.txt"
+    SELECT F-RESUME ASSIGN TO "resume.txt"
         ORGANIZATION IS LINE SEQUENTIAL.
 
 DATA DIVISION.
@@ -80,9 +80,11 @@ PROCEDURE DIVISION.
         END-IF
         
     END-PERFORM.
-    DISPLAY WS-FAC-NB.
-    DISPLAY WS-FAC-OK.
-    DISPLAY WS-FAC-REJ.
     CLOSE F-FACTURE.
+        
+    DISPLAY "Nombre de facture lu : "WS-FAC-NB.
+    DISPLAY "Nombre de facture valide : "WS-FAC-OK.
+    DISPLAY "Nombre de facture invalide : "WS-FAC-REJ.
+    
 
     STOP RUN.

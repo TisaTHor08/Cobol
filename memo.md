@@ -96,3 +96,4 @@ SEQUENTIAL	fichier binaire structuré
 LINE SEQUENTIAL	fichier texte lisible
 RELATIVE	accès par numéro
 INDEXED	accès par clé
+

@@ -1,0 +1,104 @@
+IDENTIFICATION DIVISION.
+PROGRAM-ID. YACHT.
+
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+
+01 WS-RESULT PIC 99 VALUE 0.
+01 WS-CATEGORY PIC X(15).
+01 WS-DICE.
+    05 WS-DICE-VALUE PIC 9(1) OCCURS 5 TIMES.
+
+01 WS-THROW.
+    05 WS-THROW-VALUE PIC 9 OCCURS 6 TIMES.
+
+01 WS-I PIC 9(3) VALUE 1.
+01 WS-FULL-H-TMP PIC 9(1).
+
+
+PROCEDURE DIVISION.
+    MOVE 4 TO WS-DICE-VALUE(1).
+    MOVE 2 TO WS-DICE-VALUE(2).
+    MOVE 2 TO WS-DICE-VALUE(3).
+    MOVE 2 TO WS-DICE-VALUE(4).
+    MOVE 2 TO WS-DICE-VALUE(5).
+    MOVE "Four of a Kind" TO WS-CATEGORY.
+
+    PERFORM COUNT-VALUE
+
+    PERFORM EVALUATE-CATEGORY
+
+    DISPLAY WS-RESULT.
+
+STOP RUN.
+
+COUNT-VALUE.
+    PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I >= 6
+        ADD 1 TO WS-THROW-VALUE(WS-DICE-VALUE(WS-I))
+    END-PERFORM.
+
+EXIT.
+
+EVALUATE-CATEGORY.
+    EVALUATE WS-CATEGORY
+        WHEN "Ones"
+            COMPUTE WS-RESULT = WS-THROW-VALUE(1)
+
+        WHEN "Twos"
+            COMPUTE WS-RESULT = 2 * WS-THROW-VALUE(2)
+
+        WHEN "Trees"
+            COMPUTE WS-RESULT = 3 * WS-THROW-VALUE(3)
+
+        WHEN "Fours"
+            COMPUTE WS-RESULT = 4 * WS-THROW-VALUE(4)
+
+        WHEN "Fives"
+            COMPUTE WS-RESULT = 5 * WS-THROW-VALUE(5)
+
+        WHEN "Sixes"
+            COMPUTE WS-RESULT = 6 * WS-THROW-VALUE(6)
+        
+        WHEN "Full House"
+            PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I = 5
+                IF WS-THROW-VALUE(WS-I) >= 3
+                    MOVE WS-I TO WS-FULL-H-TMP
+                    PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I = 5
+                        IF WS-THROW-VALUE(WS-I) >= 2 AND WS-I NOT= WS-FULL-H-TMP
+                            COMPUTE WS-RESULT = WS-DICE-VALUE(1) + WS-DICE-VALUE(2) + WS-DICE-VALUE(3) + WS-DICE-VALUE(4) + WS-DICE-VALUE(5)
+                        END-IF 
+                    END-PERFORM
+                END-IF 
+            END-PERFORM
+            COMPUTE WS-RESULT = WS-DICE-VALUE(1) + WS-DICE-VALUE(2) + WS-DICE-VALUE(3) + WS-DICE-VALUE(4) + WS-DICE-VALUE(5)
+        
+        WHEN "Four of a Kind"
+            PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I = 5
+                IF WS-THROW-VALUE(WS-I) >= 4
+                    COMPUTE WS-RESULT = 4 * WS-THROW-VALUE(WS-I)
+                END-IF 
+            END-PERFORM
+
+        WHEN "Little Straight"
+            IF WS-THROW-VALUE(1) = 1 AND WS-THROW-VALUE(2) = 1 AND WS-THROW-VALUE(3) = 1 AND WS-THROW-VALUE(4) = 1 AND WS-THROW-VALUE(5) = 1
+                COMPUTE WS-RESULT = 30
+
+        WHEN "Big Straight"
+            IF WS-THROW-VALUE(6) = 1 AND WS-THROW-VALUE(2) = 1 AND WS-THROW-VALUE(3) = 1 AND WS-THROW-VALUE(4) = 1 AND WS-THROW-VALUE(5) = 1
+                COMPUTE WS-RESULT = 30
+
+        WHEN "Choice"
+            COMPUTE WS-RESULT = WS-DICE-VALUE(1) + WS-DICE-VALUE(2) + WS-DICE-VALUE(3) + WS-DICE-VALUE(4) + WS-DICE-VALUE(5)
+
+        WHEN "Yacht"
+            PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I = 5
+                IF WS-THROW-VALUE(WS-I) = 5
+                    COMPUTE WS-RESULT = 50
+                END-IF 
+            END-PERFORM
+
+        
+
+  
+
+EXIT.
